@@ -1,0 +1,10 @@
+/Users/secoalba/Documents/PROGRAMACION/BLOCKCHAIN_DEV/ZEALYNX/DEV/Solana/Staking/target/sbf-solana-solana/release/deps/libthiserror-1b843c05c72fa3fc.rmeta: /Users/secoalba/.cargo/registry/src/index.crates.io-6f17d22bba15001f/thiserror-1.0.59/src/lib.rs /Users/secoalba/.cargo/registry/src/index.crates.io-6f17d22bba15001f/thiserror-1.0.59/src/aserror.rs /Users/secoalba/.cargo/registry/src/index.crates.io-6f17d22bba15001f/thiserror-1.0.59/src/display.rs /Users/secoalba/.cargo/registry/src/index.crates.io-6f17d22bba15001f/thiserror-1.0.59/src/provide.rs
+
+/Users/secoalba/Documents/PROGRAMACION/BLOCKCHAIN_DEV/ZEALYNX/DEV/Solana/Staking/target/sbf-solana-solana/release/deps/libthiserror-1b843c05c72fa3fc.rlib: /Users/secoalba/.cargo/registry/src/index.crates.io-6f17d22bba15001f/thiserror-1.0.59/src/lib.rs /Users/secoalba/.cargo/registry/src/index.crates.io-6f17d22bba15001f/thiserror-1.0.59/src/aserror.rs /Users/secoalba/.cargo/registry/src/index.crates.io-6f17d22bba15001f/thiserror-1.0.59/src/display.rs /Users/secoalba/.cargo/registry/src/index.crates.io-6f17d22bba15001f/thiserror-1.0.59/src/provide.rs
+
+/Users/secoalba/Documents/PROGRAMACION/BLOCKCHAIN_DEV/ZEALYNX/DEV/Solana/Staking/target/sbf-solana-solana/release/deps/thiserror-1b843c05c72fa3fc.d: /Users/secoalba/.cargo/registry/src/index.crates.io-6f17d22bba15001f/thiserror-1.0.59/src/lib.rs /Users/secoalba/.cargo/registry/src/index.crates.io-6f17d22bba15001f/thiserror-1.0.59/src/aserror.rs /Users/secoalba/.cargo/registry/src/index.crates.io-6f17d22bba15001f/thiserror-1.0.59/src/display.rs /Users/secoalba/.cargo/registry/src/index.crates.io-6f17d22bba15001f/thiserror-1.0.59/src/provide.rs
+
+/Users/secoalba/.cargo/registry/src/index.crates.io-6f17d22bba15001f/thiserror-1.0.59/src/lib.rs:
+/Users/secoalba/.cargo/registry/src/index.crates.io-6f17d22bba15001f/thiserror-1.0.59/src/aserror.rs:
+/Users/secoalba/.cargo/registry/src/index.crates.io-6f17d22bba15001f/thiserror-1.0.59/src/display.rs:
+/Users/secoalba/.cargo/registry/src/index.crates.io-6f17d22bba15001f/thiserror-1.0.59/src/provide.rs:

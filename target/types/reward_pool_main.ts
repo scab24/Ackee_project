@@ -1,0 +1,763 @@
+export type RewardPoolMain = {
+  "version": "0.1.0",
+  "name": "reward_pool_main",
+  "instructions": [
+    {
+      "name": "initialize",
+      "accounts": [
+        {
+          "name": "rewardPool",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "user",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "depositReward",
+      "accounts": [
+        {
+          "name": "rewardPool",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "user",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "taxRecipientAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "campaignTokenAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "rewardInfo",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "tokenAddress",
+          "type": "publicKey"
+        },
+        {
+          "name": "campaignAmount",
+          "type": "u64"
+        },
+        {
+          "name": "feeAmount",
+          "type": "u64"
+        },
+        {
+          "name": "campaignId",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "claimReward",
+      "accounts": [
+        {
+          "name": "rewardPool",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "amountClaimed",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "rewardInfo",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "user",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "campaignTokenAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "campaignId",
+          "type": "u64"
+        },
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "withdrawReward",
+      "accounts": [
+        {
+          "name": "rewardPool",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "user",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "campaignTokenAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "rewardInfo",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "campaignId",
+          "type": "u64"
+        },
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "getClaimedAmount",
+      "accounts": [
+        {
+          "name": "amountClaimed",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "user",
+          "isMut": false,
+          "isSigner": true
+        }
+      ],
+      "args": [
+        {
+          "name": "campaignId",
+          "type": "u64"
+        }
+      ],
+      "returns": "u64"
+    },
+    {
+      "name": "setAuthorizedSigner",
+      "accounts": [
+        {
+          "name": "rewardPool",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "owner",
+          "isMut": false,
+          "isSigner": true
+        }
+      ],
+      "args": [
+        {
+          "name": "newSigner",
+          "type": "publicKey"
+        }
+      ]
+    },
+    {
+      "name": "setTaxRecipient",
+      "accounts": [
+        {
+          "name": "rewardPool",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "owner",
+          "isMut": false,
+          "isSigner": true
+        }
+      ],
+      "args": [
+        {
+          "name": "newTaxRecipient",
+          "type": "publicKey"
+        }
+      ]
+    },
+    {
+      "name": "pause",
+      "accounts": [
+        {
+          "name": "rewardPool",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "owner",
+          "isMut": false,
+          "isSigner": true
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "unpause",
+      "accounts": [
+        {
+          "name": "rewardPool",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "owner",
+          "isMut": false,
+          "isSigner": true
+        }
+      ],
+      "args": []
+    }
+  ],
+  "accounts": [
+    {
+      "name": "rewardPoolState",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "owner",
+            "type": "publicKey"
+          },
+          {
+            "name": "taxRecipient",
+            "type": "publicKey"
+          },
+          {
+            "name": "authorizedSigner",
+            "type": "publicKey"
+          },
+          {
+            "name": "paused",
+            "type": "bool"
+          }
+        ]
+      }
+    },
+    {
+      "name": "rewardInfo",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "amount",
+            "type": "u64"
+          },
+          {
+            "name": "tokenAddress",
+            "type": "publicKey"
+          },
+          {
+            "name": "ownerAddress",
+            "type": "publicKey"
+          }
+        ]
+      }
+    },
+    {
+      "name": "amountClaimed",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "amountClaimed",
+            "type": "u64"
+          }
+        ]
+      }
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "CampaignAlreadyExists",
+      "msg": "The campaign already exists."
+    },
+    {
+      "code": 6001,
+      "name": "NotEnoughReward",
+      "msg": "Not enough reward in the pool."
+    },
+    {
+      "code": 6002,
+      "name": "ClaimAmountExceedsAllowedBalance",
+      "msg": "Claim amount exceeds allowed balance"
+    },
+    {
+      "code": 6003,
+      "name": "RewardAlreadyClaimed",
+      "msg": "Reward already claimed"
+    },
+    {
+      "code": 6004,
+      "name": "OnlyCampaignCreatorAllowed",
+      "msg": "Only campaign creator allowed to withdraw"
+    },
+    {
+      "code": 6005,
+      "name": "InvalidSignerAddress",
+      "msg": "Invalid signer address"
+    },
+    {
+      "code": 6006,
+      "name": "InvalidOwnerAddress",
+      "msg": "Invalid owner address"
+    },
+    {
+      "code": 6007,
+      "name": "ProgramPaused",
+      "msg": "Program is paused"
+    },
+    {
+      "code": 6008,
+      "name": "Unauthorized",
+      "msg": "Unauthorized"
+    }
+  ]
+};
+
+export const IDL: RewardPoolMain = {
+  "version": "0.1.0",
+  "name": "reward_pool_main",
+  "instructions": [
+    {
+      "name": "initialize",
+      "accounts": [
+        {
+          "name": "rewardPool",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "user",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "depositReward",
+      "accounts": [
+        {
+          "name": "rewardPool",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "user",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "taxRecipientAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "campaignTokenAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "rewardInfo",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "tokenAddress",
+          "type": "publicKey"
+        },
+        {
+          "name": "campaignAmount",
+          "type": "u64"
+        },
+        {
+          "name": "feeAmount",
+          "type": "u64"
+        },
+        {
+          "name": "campaignId",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "claimReward",
+      "accounts": [
+        {
+          "name": "rewardPool",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "amountClaimed",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "rewardInfo",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "user",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "campaignTokenAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "campaignId",
+          "type": "u64"
+        },
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "withdrawReward",
+      "accounts": [
+        {
+          "name": "rewardPool",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "user",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "campaignTokenAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "rewardInfo",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "campaignId",
+          "type": "u64"
+        },
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "getClaimedAmount",
+      "accounts": [
+        {
+          "name": "amountClaimed",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "user",
+          "isMut": false,
+          "isSigner": true
+        }
+      ],
+      "args": [
+        {
+          "name": "campaignId",
+          "type": "u64"
+        }
+      ],
+      "returns": "u64"
+    },
+    {
+      "name": "setAuthorizedSigner",
+      "accounts": [
+        {
+          "name": "rewardPool",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "owner",
+          "isMut": false,
+          "isSigner": true
+        }
+      ],
+      "args": [
+        {
+          "name": "newSigner",
+          "type": "publicKey"
+        }
+      ]
+    },
+    {
+      "name": "setTaxRecipient",
+      "accounts": [
+        {
+          "name": "rewardPool",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "owner",
+          "isMut": false,
+          "isSigner": true
+        }
+      ],
+      "args": [
+        {
+          "name": "newTaxRecipient",
+          "type": "publicKey"
+        }
+      ]
+    },
+    {
+      "name": "pause",
+      "accounts": [
+        {
+          "name": "rewardPool",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "owner",
+          "isMut": false,
+          "isSigner": true
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "unpause",
+      "accounts": [
+        {
+          "name": "rewardPool",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "owner",
+          "isMut": false,
+          "isSigner": true
+        }
+      ],
+      "args": []
+    }
+  ],
+  "accounts": [
+    {
+      "name": "rewardPoolState",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "owner",
+            "type": "publicKey"
+          },
+          {
+            "name": "taxRecipient",
+            "type": "publicKey"
+          },
+          {
+            "name": "authorizedSigner",
+            "type": "publicKey"
+          },
+          {
+            "name": "paused",
+            "type": "bool"
+          }
+        ]
+      }
+    },
+    {
+      "name": "rewardInfo",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "amount",
+            "type": "u64"
+          },
+          {
+            "name": "tokenAddress",
+            "type": "publicKey"
+          },
+          {
+            "name": "ownerAddress",
+            "type": "publicKey"
+          }
+        ]
+      }
+    },
+    {
+      "name": "amountClaimed",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "amountClaimed",
+            "type": "u64"
+          }
+        ]
+      }
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "CampaignAlreadyExists",
+      "msg": "The campaign already exists."
+    },
+    {
+      "code": 6001,
+      "name": "NotEnoughReward",
+      "msg": "Not enough reward in the pool."
+    },
+    {
+      "code": 6002,
+      "name": "ClaimAmountExceedsAllowedBalance",
+      "msg": "Claim amount exceeds allowed balance"
+    },
+    {
+      "code": 6003,
+      "name": "RewardAlreadyClaimed",
+      "msg": "Reward already claimed"
+    },
+    {
+      "code": 6004,
+      "name": "OnlyCampaignCreatorAllowed",
+      "msg": "Only campaign creator allowed to withdraw"
+    },
+    {
+      "code": 6005,
+      "name": "InvalidSignerAddress",
+      "msg": "Invalid signer address"
+    },
+    {
+      "code": 6006,
+      "name": "InvalidOwnerAddress",
+      "msg": "Invalid owner address"
+    },
+    {
+      "code": 6007,
+      "name": "ProgramPaused",
+      "msg": "Program is paused"
+    },
+    {
+      "code": 6008,
+      "name": "Unauthorized",
+      "msg": "Unauthorized"
+    }
+  ]
+};

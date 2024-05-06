@@ -1,0 +1,1 @@
+/Users/secoalba/Documents/PROGRAMACION/BLOCKCHAIN_DEV/ZEALYNX/DEV/Solana/staking_reward_pool/target/sbf-solana-solana/release/reward_pool_main.so: /Users/secoalba/Documents/PROGRAMACION/BLOCKCHAIN_DEV/ZEALYNX/DEV/Solana/staking_reward_pool/programs/reward_pool_main/src/lib.rs
