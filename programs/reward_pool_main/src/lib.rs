@@ -11,6 +11,8 @@ pub mod reward_pool_main {
         let reward_pool = &mut ctx.accounts.reward_pool;
         reward_pool.tax_recipient = ctx.accounts.user.key();
         reward_pool.owner = ctx.accounts.user.key();
+        reward_pool.authorized_signer = ctx.accounts.user.key(); // Asegura que el authorized_signer coincida con el owner
+        reward_pool.paused = false; // Inicializa con el estado no pausado
         Ok(())
     }
 

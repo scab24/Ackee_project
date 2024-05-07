@@ -2,7 +2,7 @@ import * as anchor from "@coral-xyz/anchor";
 import { Program } from "@coral-xyz/anchor";
 import { RewardPoolMain } from "../target/types/reward_pool_main";
 import { assert } from "chai";
-import { TOKEN_PROGRAM_ID, createMint, createAccount, mintTo } from "@solana/spl-token";
+import { createMint, createAccount, mintTo, TOKEN_PROGRAM_ID } from "@solana/spl-token";
 import { Keypair, SystemProgram } from "@solana/web3.js";
 import BN from "bn.js";
 
@@ -34,7 +34,7 @@ describe("reward_pool_main", () => {
   it("Initializes the reward pool", async () => {
     // Asegurarse de que el `wallet` tiene fondos suficientes
     await airdrop(connection, wallet.publicKey);
-
+  
     // Ejecutar la transacción de inicialización para crear la cuenta de Reward Pool
     await program.methods
       .initialize()
@@ -45,10 +45,10 @@ describe("reward_pool_main", () => {
       })
       .signers([rewardPoolKp]) // Firmar para inicializar la cuenta
       .rpc();
-
+  
     // Recuperar la cuenta recién creada para verificar su estado
     const rewardPoolAccount = await program.account.rewardPoolState.fetch(rewardPoolKp.publicKey);
-
+  
     // Verificar que la cuenta tenga los valores correctos
     assert.strictEqual(
       rewardPoolAccount.owner.toBase58(),
@@ -60,20 +60,21 @@ describe("reward_pool_main", () => {
       wallet.publicKey.toBase58(),
       "Beneficiario de impuestos incorrecto"
     );
-
-    // Verificar que el campo `authorizedSigner` esté inicializado con un valor predeterminado
+  
+    // Verificar que el campo `authorized_signer` esté inicializado correctamente
     assert.strictEqual(
       rewardPoolAccount.authorizedSigner.toBase58(),
-      anchor.web3.PublicKey.default.toBase58(),
-      "El firmante autorizado debería ser la clave pública predeterminada"
+      wallet.publicKey.toBase58(), // El authorized_signer inicial debe coincidir con el owner
+      "El authorized_signer debería ser igual al owner"
     );
-
+  
     // Verificar que el campo `paused` esté inicializado correctamente
     assert.isFalse(
       rewardPoolAccount.paused,
       "El estado pausado debería ser falso por defecto"
     );
   });
+  
 
   it("Pauses the reward pool", async () => {
     // Pausar el Reward Pool
@@ -105,6 +106,27 @@ describe("reward_pool_main", () => {
     assert.isFalse(rewardPoolAccount.paused, "El estado pausado debería ser falso nuevamente");
   });
 
+  it("Sets a new authorized signer for the reward pool", async () => {
+    // Generar un nuevo Keypair para el nuevo `authorized_signer`
+    const newAuthorizedSigner = Keypair.generate();
+  
+    // Establecer el nuevo `authorized_signer`
+    await program.methods
+      .setAuthorizedSigner(newAuthorizedSigner.publicKey)
+      .accounts({
+        rewardPool: rewardPoolKp.publicKey,
+        owner: wallet.publicKey, // El dueño original que debe autorizar el cambio
+      })
+      .rpc(); // El wallet firmará automáticamente
+  
+    // Verificar que el nuevo `authorized_signer` esté correctamente configurado
+    const updatedRewardPoolAccount = await program.account.rewardPoolState.fetch(rewardPoolKp.publicKey);
+    assert.strictEqual(
+      updatedRewardPoolAccount.authorizedSigner.toBase58(),
+      newAuthorizedSigner.publicKey.toBase58(),
+      "El authorized_signer no se ha actualizado correctamente"
+    );
+  });
   // Depósito de recompensas en el Reward Pool
     it("Deposits rewards correctly", async () => {
       // Generar el PDA para `reward_info`

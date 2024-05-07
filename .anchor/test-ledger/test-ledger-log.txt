@@ -3,10 +3,10 @@ Log: .anchor/test-ledger/validator.log
 Initializing...
 Waiting for fees to stabilize 1...
 Connecting...
-Identity: DqCpoz6Q3fazHfRpeu1GgckfMLbebgAJL1xXZrVdmxPT
-Genesis Hash: 5vGJbfBh8xxXVGudGbbhHeX5JTeQKyN1rNH5osmZaTJp
+Identity: 38tK4dubfY1z1eZSvAgQdvTQnjXvrDXWN6YUxNGVso6V
+Genesis Hash: CLFgDR1FMRkn8cd8tTfAddfQNChr4mC6JfgFMJqA2VFh
 Version: 1.18.8
-Shred Version: 63602
+Shred Version: 38346
 Gossip Address: 127.0.0.1:1024
 TPU Address: 127.0.0.1:1027
 JSON RPC URL: http://127.0.0.1:8899
@@ -14,7 +14,9 @@ WebSocket PubSub URL: ws://127.0.0.1:8900
 00:00:02 | Processed Slot: 3 | Confirmed Slot: 3 | Finalized Slot: 0 | Full Snapshot Slot: - | Incremental Snapshot Slot: - | Transactions: 3 | ◎499.999990000
 00:00:02 | Processed Slot: 4 | Confirmed Slot: 4 | Finalized Slot: 0 | Full Snapshot Slot: - | Incremental Snapshot Slot: - | Transactions: 5 | ◎499.999990000
 00:00:02 | Processed Slot: 4 | Confirmed Slot: 4 | Finalized Slot: 0 | Full Snapshot Slot: - | Incremental Snapshot Slot: - | Transactions: 5 | ◎499.999990000
-00:00:02 | Processed Slot: 5 | Confirmed Slot: 5 | Finalized Slot: 0 | Full Snapshot Slot: - | Incremental Snapshot Slot: - | Transactions: 7 | ◎499.999987500
+00:00:03 | Processed Slot: 5 | Confirmed Slot: 5 | Finalized Slot: 0 | Full Snapshot Slot: - | Incremental Snapshot Slot: - | Transactions: 7 | ◎499.999987500
 00:00:03 | Processed Slot: 5 | Confirmed Slot: 5 | Finalized Slot: 0 | Full Snapshot Slot: - | Incremental Snapshot Slot: - | Transactions: 7 | ◎499.999987500
 00:00:03 | Processed Slot: 6 | Confirmed Slot: 6 | Finalized Slot: 0 | Full Snapshot Slot: - | Incremental Snapshot Slot: - | Transactions: 9 | ◎499.999985000
 00:00:03 | Processed Slot: 6 | Confirmed Slot: 6 | Finalized Slot: 0 | Full Snapshot Slot: - | Incremental Snapshot Slot: - | Transactions: 9 | ◎499.999985000
+00:00:04 | Processed Slot: 7 | Confirmed Slot: 7 | Finalized Slot: 0 | Full Snapshot Slot: - | Incremental Snapshot Slot: - | Transactions: 11 | ◎499.999982500
+00:00:04 | Processed Slot: 7 | Confirmed Slot: 7 | Finalized Slot: 0 | Full Snapshot Slot: - | Incremental Snapshot Slot: - | Transactions: 11 | ◎499.999982500
