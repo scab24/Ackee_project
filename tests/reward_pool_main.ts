@@ -127,49 +127,57 @@ describe("reward_pool_main", () => {
       "El authorized_signer no se ha actualizado correctamente"
     );
   });
+
+  //@audit => Fail
   // Depósito de recompensas en el Reward Pool
-    it("Deposits rewards correctly", async () => {
-      // Generar el PDA para `reward_info`
-      const [rewardInfoPda] = await anchor.web3.PublicKey.findProgramAddress(
-        [Buffer.from("rewardInfoPda")],
-        program.programId
-      );
-      const [campaignTokenAccount] = await anchor.web3.PublicKey.findProgramAddress(
-        [Buffer.from("campaignTokenAccount")],
-        program.programId
-      );
-      const [taxRecipientAccount] = await anchor.web3.PublicKey.findProgramAddress(
-        [Buffer.from("taxRecipientAccount")],
-        program.programId
-      );
-
-      // Definir los valores de la campaña y las tarifas
-      const campaignAmount = new BN(500);
-      const feeAmount = new BN(50);
-      const campaignId = new BN(1);
-
-      // Asegurarse de que `taxRecipientAccount` esté correctamente inicializado
-      assert.ok(taxRecipientAccount, "La cuenta taxRecipientAccount no está definida");
-
-      // Ejecutar el método `depositReward`
-      await program.methods
-        .depositReward(campaignTokenAccount, campaignAmount, feeAmount, campaignId)
-        .accounts({
-          rewardPool: rewardPoolKp.publicKey,
-          user: wallet.publicKey,
-          taxRecipientAccount: taxRecipientAccount,
-          campaignTokenAccount: campaignTokenAccount,
-          tokenProgram: TOKEN_PROGRAM_ID,
-          rewardInfo: rewardInfoPda,
-          systemProgram: SystemProgram.programId,
-        })
-        // .signers([rewardPoolKp]) // Firmar solo con el Keypair necesario
-        .rpc();
-
-      // Verificar que el depósito se realizó correctamente
-      const rewardInfoAccount = await program.account.rewardInfo.fetch(rewardInfoPda);
-      assert.strictEqual(rewardInfoAccount.amount.toNumber(), campaignAmount.toNumber(), "El monto no coincide");
-      assert.strictEqual(rewardInfoAccount.tokenAddress.toBase58(), campaignTokenAccount.toBase58(), "La cuenta de la campaña no coincide");
-      assert.strictEqual(rewardInfoAccount.ownerAddress.toBase58(), wallet.publicKey.toBase58(), "El propietario no coincide");
-    });
+  it("Deposits rewards correctly", async () => {
+    // Crear un Keypair para actuar como pagador
+    const payer = Keypair.generate();
+  
+    // Asegurarse de que el pagador tenga fondos suficientes
+    await airdrop(connection, payer.publicKey);
+  
+    // Crear un mint para la campaña usando el Keypair del pagador
+    const mint = await createMint(connection, payer, payer.publicKey, null, 0);
+  
+    // Crear cuentas de token para `tax_recipient_account` y `campaign_token_account`
+    const taxRecipientAccount = await createAccount(connection, payer, mint, taxRecipientKp.publicKey);
+    const campaignTokenAccount = await createAccount(connection, payer, mint, campaignTokenKp.publicKey);
+  
+    // Generar el PDA para `reward_info`
+    const [rewardInfoPda] = await anchor.web3.PublicKey.findProgramAddress(
+      [Buffer.from("reward_info"), new BN(1).toArrayLike(Buffer, "le", 8)],
+      program.programId
+    );
+  
+    // Definir los valores de la campaña y las tarifas
+    const campaignAmount = new BN(500);
+    const feeAmount = new BN(50);
+    const campaignId = new BN(1);
+  
+    // Mint tokens al pagador para simular el saldo del usuario
+    await mintTo(connection, payer, mint, payer.publicKey, payer, campaignAmount.toNumber() + feeAmount.toNumber());
+  
+    // Ejecutar el método `depositReward` con las cuentas inicializadas
+    await program.methods
+      .depositReward(campaignTokenAccount, campaignAmount, feeAmount, campaignId)
+      .accounts({
+        rewardPool: rewardPoolKp.publicKey,
+        user: wallet.publicKey,
+        taxRecipientAccount: taxRecipientAccount,
+        campaignTokenAccount: campaignTokenAccount,
+        tokenProgram: TOKEN_PROGRAM_ID,
+        rewardInfo: rewardInfoPda,
+        systemProgram: SystemProgram.programId,
+      })
+      .signers([rewardPoolKp, payer]) // Firmar con los Keypair necesarios
+      .rpc();
+  
+    // Verificar que el depósito se realizó correctamente
+    const rewardInfoAccount = await program.account.rewardInfo.fetch(rewardInfoPda);
+    assert.strictEqual(rewardInfoAccount.amount.toNumber(), campaignAmount.toNumber(), "El monto no coincide");
+    assert.strictEqual(rewardInfoAccount.tokenAddress.toBase58(), campaignTokenAccount.toBase58(), "La cuenta de la campaña no coincide");
+    assert.strictEqual(rewardInfoAccount.ownerAddress.toBase58(), wallet.publicKey.toBase58(), "El propietario no coincide");
+  });
+  
 });
