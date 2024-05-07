@@ -75,6 +75,36 @@ describe("reward_pool_main", () => {
     );
   });
 
+  it("Pauses the reward pool", async () => {
+    // Pausar el Reward Pool
+    await program.methods
+      .pause()
+      .accounts({
+        rewardPool: rewardPoolKp.publicKey,
+        owner: wallet.publicKey, // Dueño original como firmante
+      })
+      .rpc(); // El wallet firmará automáticamente
+
+    // Verificar que el Reward Pool esté pausado
+    const rewardPoolAccount = await program.account.rewardPoolState.fetch(rewardPoolKp.publicKey);
+    assert.isTrue(rewardPoolAccount.paused, "El estado pausado debería ser verdadero");
+  });
+
+  it("Unpauses the reward pool", async () => {
+    // Reactivar el Reward Pool
+    await program.methods
+      .unpause()
+      .accounts({
+        rewardPool: rewardPoolKp.publicKey,
+        owner: wallet.publicKey, // Dueño original como firmante
+      })
+      .rpc(); // El wallet firmará automáticamente
+
+    // Verificar que el Reward Pool esté activo nuevamente
+    const rewardPoolAccount = await program.account.rewardPoolState.fetch(rewardPoolKp.publicKey);
+    assert.isFalse(rewardPoolAccount.paused, "El estado pausado debería ser falso nuevamente");
+  });
+
   // Depósito de recompensas en el Reward Pool
     it("Deposits rewards correctly", async () => {
       // Generar el PDA para `reward_info`
@@ -111,7 +141,7 @@ describe("reward_pool_main", () => {
           rewardInfo: rewardInfoPda,
           systemProgram: SystemProgram.programId,
         })
-        .signers([rewardPoolKp]) // Firmar solo con el Keypair necesario
+        // .signers([rewardPoolKp]) // Firmar solo con el Keypair necesario
         .rpc();
 
       // Verificar que el depósito se realizó correctamente

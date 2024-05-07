@@ -1,6 +1,6 @@
 Streaming transaction logs mentioning 44cUoDQ2V5GH5zgaYD7A3EMgRCnWXRGvfCgGkEUxxYWS. Confirmed commitment
 Transaction executed in slot 4:
-  Signature: fUKaq6dDqVmwwqiY9LSHUuBc2Ts2S4CYdDmbgA7b81gXbob9w9R5wBbe5bL1iCNRZefAPduh1SvoMFhwnJSpjBP
+  Signature: 2XnU3WxFsTdCLygqT1q6LBPXK8vhX7kJM6fbpKoF54TSL1V25uaA5jyfw4Eym9b92wXdRSqDdgA1iw6xTgVaiHzX
   Status: Ok
   Log Messages:
     Program 44cUoDQ2V5GH5zgaYD7A3EMgRCnWXRGvfCgGkEUxxYWS invoke [1]
@@ -8,4 +8,22 @@ Transaction executed in slot 4:
     Program 11111111111111111111111111111111 invoke [2]
     Program 11111111111111111111111111111111 success
     Program 44cUoDQ2V5GH5zgaYD7A3EMgRCnWXRGvfCgGkEUxxYWS consumed 6851 of 200000 compute units
+    Program 44cUoDQ2V5GH5zgaYD7A3EMgRCnWXRGvfCgGkEUxxYWS success
+Transaction executed in slot 5:
+  Signature: 65xhA7UfnPSpitkjNQZdFNJCaQfe3fD5znbrDN97HmUuGPFtRLqfJU72rUKRxxMSCTujquSNxSjApKwt3CHwYbAz
+  Status: Ok
+  Log Messages:
+    Program 44cUoDQ2V5GH5zgaYD7A3EMgRCnWXRGvfCgGkEUxxYWS invoke [1]
+    Program log: Instruction: Pause
+    Program log: Reward pool paused
+    Program 44cUoDQ2V5GH5zgaYD7A3EMgRCnWXRGvfCgGkEUxxYWS consumed 3181 of 200000 compute units
+    Program 44cUoDQ2V5GH5zgaYD7A3EMgRCnWXRGvfCgGkEUxxYWS success
+Transaction executed in slot 6:
+  Signature: 5zXdkrVSUz2x9hNo7LCN7LStXSRP9aUhfpDosuV3ZhSvPW1zYjqVvEJcx1TShXgnvr8o1umJK2xBazd6mrGWUvuY
+  Status: Ok
+  Log Messages:
+    Program 44cUoDQ2V5GH5zgaYD7A3EMgRCnWXRGvfCgGkEUxxYWS invoke [1]
+    Program log: Instruction: Unpause
+    Program log: Reward pool unpaused
+    Program 44cUoDQ2V5GH5zgaYD7A3EMgRCnWXRGvfCgGkEUxxYWS consumed 3180 of 200000 compute units
     Program 44cUoDQ2V5GH5zgaYD7A3EMgRCnWXRGvfCgGkEUxxYWS success
