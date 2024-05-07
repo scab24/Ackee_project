@@ -2,12 +2,11 @@ import * as anchor from "@coral-xyz/anchor";
 import { Program } from "@coral-xyz/anchor";
 import { RewardPoolMain } from "../target/types/reward_pool_main";
 import { assert } from "chai";
+import { TOKEN_PROGRAM_ID, createMint, createAccount, mintTo } from "@solana/spl-token";
+import { Keypair, SystemProgram } from "@solana/web3.js";
+import BN from "bn.js";
 
-// import { Token, TOKEN_PROGRAM_ID } from "@solana/spl-token";
-// import BN from "bn.js";
-
-
-// Airdrop function
+// Función para realizar el airdrop
 async function airdrop(connection, pubkey) {
   const airdropSignature = await connection.requestAirdrop(pubkey, 1e9); // 1 SOL
   await connection.confirmTransaction(airdropSignature, "confirmed");
@@ -19,36 +18,32 @@ describe("reward_pool_main", () => {
 
   const connection = provider.connection;
   const wallet = provider.wallet;
-  const walletFake = anchor.web3.Keypair.generate();
   const program = anchor.workspace.RewardPoolMain as Program<RewardPoolMain>;
-  const vault = anchor.web3.Keypair.generate();
+
+  const rewardPoolKp = Keypair.generate();
+  const taxRecipientKp = Keypair.generate();
+  const campaignTokenKp = Keypair.generate();
+
+  // const taxRecipientAccount = anchor.web3.Keypair.generate();
+  // const campaignTokenAccount = anchor.web3.Keypair.generate();
+
+  // let campaignMint;
+  // let campaignTokenAccount;
+  // let taxRecipientAccount;
 
   it("Initializes the reward pool", async () => {
-    // Airdrop al monedero principal para asegurarse de que tiene fondos suficientes
+    // Asegurarse de que el `wallet` tiene fondos suficientes
     await airdrop(connection, wallet.publicKey);
 
-    // Encontrar la dirección programática para `token` y `reward_pool`
-    const [tokenPDA] = anchor.web3.PublicKey.findProgramAddressSync(
-      [Buffer.from("token")],
-      program.programId
-    );
-    const [rewardPoolPda] = await anchor.web3.PublicKey.findProgramAddress(
-      [Buffer.from("reward_pool")],
-      program.programId
-    );
-
-    // Generar una nueva clave para la cuenta de Reward Pool
-    const rewardPoolKp = anchor.web3.Keypair.generate();
-
-    // Enviar la transacción de inicialización para crear la cuenta de recompensa
+    // Ejecutar la transacción de inicialización para crear la cuenta de Reward Pool
     await program.methods
       .initialize()
       .accounts({
         rewardPool: rewardPoolKp.publicKey, // Nueva cuenta de Reward Pool
         user: wallet.publicKey, // Firmante principal
-        systemProgram: anchor.web3.SystemProgram.programId,
+        systemProgram: SystemProgram.programId,
       })
-      .signers([rewardPoolKp]) // Se firma para inicializar la cuenta
+      .signers([rewardPoolKp]) // Firmar para inicializar la cuenta
       .rpc();
 
     // Recuperar la cuenta recién creada para verificar su estado
@@ -68,63 +63,61 @@ describe("reward_pool_main", () => {
 
     // Verificar que el campo `authorizedSigner` esté inicializado con un valor predeterminado
     assert.strictEqual(
-    rewardPoolAccount.authorizedSigner.toBase58(),
-    anchor.web3.PublicKey.default.toBase58(),
-    "El firmante autorizado debería ser la clave pública predeterminada"
+      rewardPoolAccount.authorizedSigner.toBase58(),
+      anchor.web3.PublicKey.default.toBase58(),
+      "El firmante autorizado debería ser la clave pública predeterminada"
     );
 
     // Verificar que el campo `paused` esté inicializado correctamente
     assert.isFalse(
-    rewardPoolAccount.paused,
-    "El estado pausado debería ser falso por defecto"
+      rewardPoolAccount.paused,
+      "El estado pausado debería ser falso por defecto"
     );
-
-    // Verificar que el campo `vault` esté inicializado (si corresponde)
-    console.log("Estado de la cuenta de Reward Pool:", rewardPoolAccount);
   });
 
+  // Depósito de recompensas en el Reward Pool
+    it("Deposits rewards correctly", async () => {
+      // Generar el PDA para `reward_info`
+      const [rewardInfoPda] = await anchor.web3.PublicKey.findProgramAddress(
+        [Buffer.from("rewardInfoPda")],
+        program.programId
+      );
+      const [campaignTokenAccount] = await anchor.web3.PublicKey.findProgramAddress(
+        [Buffer.from("campaignTokenAccount")],
+        program.programId
+      );
+      const [taxRecipientAccount] = await anchor.web3.PublicKey.findProgramAddress(
+        [Buffer.from("taxRecipientAccount")],
+        program.programId
+      );
 
-  //  // Depósito de recompensas en el Reward Pool
-  //  it("Deposits rewards correctly", async () => {
-  //   // Airdrop para la cuenta principal para asegurarse de que tiene fondos suficientes
-  //   await airdrop(connection, wallet.publicKey);
+      // Definir los valores de la campaña y las tarifas
+      const campaignAmount = new BN(500);
+      const feeAmount = new BN(50);
+      const campaignId = new BN(1);
 
-  //   // Crear un Token Account para la campaña y el receptor de tarifas
-  //   const token = new Token(connection, TOKEN_PROGRAM_ID, TOKEN_PROGRAM_ID, wallet.payer);
-  //   const campaignTokenAccount = await token.createAccount(wallet.publicKey);
-  //   const taxRecipientAccount = await token.createAccount(wallet.publicKey);
+      // Asegurarse de que `taxRecipientAccount` esté correctamente inicializado
+      assert.ok(taxRecipientAccount, "La cuenta taxRecipientAccount no está definida");
 
-  //   // Generar el PDA para `reward_info`
-  //   const [rewardInfoPda] = await anchor.web3.PublicKey.findProgramAddress(
-  //     [Buffer.from("reward_info"), Buffer.from("campaign_1")],
-  //     program.programId
-  //   );
+      // Ejecutar el método `depositReward`
+      await program.methods
+        .depositReward(campaignTokenAccount, campaignAmount, feeAmount, campaignId)
+        .accounts({
+          rewardPool: rewardPoolKp.publicKey,
+          user: wallet.publicKey,
+          taxRecipientAccount: taxRecipientAccount,
+          campaignTokenAccount: campaignTokenAccount,
+          tokenProgram: TOKEN_PROGRAM_ID,
+          rewardInfo: rewardInfoPda,
+          systemProgram: SystemProgram.programId,
+        })
+        .signers([rewardPoolKp]) // Firmar solo con el Keypair necesario
+        .rpc();
 
-  //   // Definir el monto de la campaña y la tarifa como Big Numbers (BN)
-  //   const campaignAmount = new BN(500); // Monto de prueba para la campaña
-  //   const feeAmount = new BN(50); // Tarifa para la campaña
-
-  //   // Ejecutar la transacción `depositReward`
-  //   await program.methods
-  //     .depositReward(campaignTokenAccount, campaignAmount, feeAmount, new BN(1))
-  //     .accounts({
-  //       rewardPool: rewardPoolKp.publicKey,
-  //       user: wallet.publicKey,
-  //       taxRecipientAccount: taxRecipientAccount,
-  //       campaignTokenAccount: campaignTokenAccount,
-  //       tokenProgram: TOKEN_PROGRAM_ID,
-  //       rewardInfo: rewardInfoPda,
-  //       systemProgram: anchor.web3.SystemProgram.programId,
-  //     })
-  //     .signers([rewardPoolKp])
-  //     .rpc();
-
-  //   // Recuperar la cuenta `reward_info` para verificar el depósito
-  //   const rewardInfoAccount = await program.account.rewardInfo.fetch(rewardInfoPda);
-
-  //   // Comprobar que el depósito se realizó correctamente
-  //   assert.strictEqual(rewardInfoAccount.amount.toNumber(), campaignAmount.toNumber(), "El monto no coincide");
-  //   assert.strictEqual(rewardInfoAccount.tokenAddress.toBase58(), campaignTokenAccount.toBase58(), "La cuenta de la campaña no coincide");
-  //   assert.strictEqual(rewardInfoAccount.ownerAddress.toBase58(), wallet.publicKey.toBase58(), "El propietario no coincide");
-  // });
+      // Verificar que el depósito se realizó correctamente
+      const rewardInfoAccount = await program.account.rewardInfo.fetch(rewardInfoPda);
+      assert.strictEqual(rewardInfoAccount.amount.toNumber(), campaignAmount.toNumber(), "El monto no coincide");
+      assert.strictEqual(rewardInfoAccount.tokenAddress.toBase58(), campaignTokenAccount.toBase58(), "La cuenta de la campaña no coincide");
+      assert.strictEqual(rewardInfoAccount.ownerAddress.toBase58(), wallet.publicKey.toBase58(), "El propietario no coincide");
+    });
 });

@@ -262,7 +262,7 @@ pub struct DepositReward<'info> {
         payer = user,
         seeds = [b"reward_info", campaign_id.to_le_bytes().as_ref()],
         bump,
-        space = 8 + 32 + 32 + 8 // Assuming space for u64 (amount), 2 * Pubkey (token_address, owner_address), plus discriminator
+        space = 8 + 32 + 32 + 32 + 1 // Assuming space for u64 (amount), 2 * Pubkey (token_address, owner_address), plus discriminator
     )]
     pub reward_info: Account<'info, RewardInfo>, // Assumes reward_info is initialized here if not already existing
     pub system_program: Program<'info, System>,
