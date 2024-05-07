@@ -1,1 +1,11 @@
 Streaming transaction logs mentioning 44cUoDQ2V5GH5zgaYD7A3EMgRCnWXRGvfCgGkEUxxYWS. Confirmed commitment
+Transaction executed in slot 3:
+  Signature: 3q7QkoJJRjC1jSzjnbvjGDLnqbeXSPYBy4RoeuudrhnkgbNFCFCWLhuCwSyJLKRCZjHJHkhmdRdEDam2bxnA1Rn7
+  Status: Ok
+  Log Messages:
+    Program 44cUoDQ2V5GH5zgaYD7A3EMgRCnWXRGvfCgGkEUxxYWS invoke [1]
+    Program log: Instruction: Initialize
+    Program 11111111111111111111111111111111 invoke [2]
+    Program 11111111111111111111111111111111 success
+    Program 44cUoDQ2V5GH5zgaYD7A3EMgRCnWXRGvfCgGkEUxxYWS consumed 6851 of 200000 compute units
+    Program 44cUoDQ2V5GH5zgaYD7A3EMgRCnWXRGvfCgGkEUxxYWS success

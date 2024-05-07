@@ -215,7 +215,7 @@ pub struct Initialize<'info> {
     #[account(
         init, 
         payer = user, 
-        space = 8 + 8 + 32 + 32)]
+        space = 8 + 32 + 32 + 32 + 1)]
     pub reward_pool: Account<'info, RewardPoolState>,
     
     #[account(mut)]
