@@ -31,6 +31,10 @@ describe("reward_pool_main", () => {
   // let campaignTokenAccount;
   // let taxRecipientAccount;
 
+
+  //========================
+  // ititialize
+  //========================
   it("Initializes the reward pool", async () => {
     // Asegurarse de que el `wallet` tiene fondos suficientes
     await airdrop(connection, wallet.publicKey);
@@ -76,6 +80,9 @@ describe("reward_pool_main", () => {
   });
   
 
+  //========================
+  // pause
+  //========================
   it("Pauses the reward pool", async () => {
     // Pausar el Reward Pool
     await program.methods
@@ -91,6 +98,9 @@ describe("reward_pool_main", () => {
     assert.isTrue(rewardPoolAccount.paused, "El estado pausado debería ser verdadero");
   });
 
+  //========================
+  // unpause
+  //========================
   it("Unpauses the reward pool", async () => {
     // Reactivar el Reward Pool
     await program.methods
@@ -106,6 +116,9 @@ describe("reward_pool_main", () => {
     assert.isFalse(rewardPoolAccount.paused, "El estado pausado debería ser falso nuevamente");
   });
 
+  //========================
+  // setAuthorizedSigner
+  //========================
   it("Sets a new authorized signer for the reward pool", async () => {
     // Generar un nuevo Keypair para el nuevo `authorized_signer`
     const newAuthorizedSigner = Keypair.generate();
@@ -128,6 +141,9 @@ describe("reward_pool_main", () => {
     );
   });
 
+  //========================
+  // setTaxRecipient
+  //========================
   it("Sets a new tax recipient for the reward pool", async () => {
     // Generar un nuevo Keypair para el nuevo `tax_recipient`
     const newTaxRecipient = Keypair.generate();
@@ -158,6 +174,9 @@ describe("reward_pool_main", () => {
     );
   });
 
+  //========================
+  // depositReward
+  //========================
   //@audit => Fail
   // Depósito de recompensas en el Reward Pool
   it("Deposits rewards correctly", async () => {
