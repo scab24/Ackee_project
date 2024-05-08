@@ -1,6 +1,6 @@
 Streaming transaction logs mentioning 44cUoDQ2V5GH5zgaYD7A3EMgRCnWXRGvfCgGkEUxxYWS. Confirmed commitment
 Transaction executed in slot 4:
-  Signature: aVyhNnpoKuPtzYXwzVQcmiupu5UxHRkTJYspXYiieu7wNxbdsiEvnQdZEXsAnJkj1hSvdyq41LpZXv1JPMpeF9D
+  Signature: 4tSZ3aZTA8XgxD5T9nTtaztD9rpcVDHv1qHgCKBEGVW6QAbpcwgxtWDVYrU2VxPFNiXhhnnFnsopR2oUHCQQ54G7
   Status: Ok
   Log Messages:
     Program 44cUoDQ2V5GH5zgaYD7A3EMgRCnWXRGvfCgGkEUxxYWS invoke [1]
@@ -10,7 +10,7 @@ Transaction executed in slot 4:
     Program 44cUoDQ2V5GH5zgaYD7A3EMgRCnWXRGvfCgGkEUxxYWS consumed 6861 of 200000 compute units
     Program 44cUoDQ2V5GH5zgaYD7A3EMgRCnWXRGvfCgGkEUxxYWS success
 Transaction executed in slot 5:
-  Signature: ZeBogukt6WQkwdPpKU67g8oSWoERfC3PveenkmwGeCWmNhovmGTrzSj15enNvhPibuKnkjbkC69TLAGBufG4HRx
+  Signature: 2HEX53FYGnPQb7cpQoTf2ouVXpsZLGWJjy2XseSg8MSogcq1PFwcSfuQpaKBT5Pk9CJpJsJYYU8C9MPnFFcYw6CS
   Status: Ok
   Log Messages:
     Program 44cUoDQ2V5GH5zgaYD7A3EMgRCnWXRGvfCgGkEUxxYWS invoke [1]
@@ -19,7 +19,7 @@ Transaction executed in slot 5:
     Program 44cUoDQ2V5GH5zgaYD7A3EMgRCnWXRGvfCgGkEUxxYWS consumed 3181 of 200000 compute units
     Program 44cUoDQ2V5GH5zgaYD7A3EMgRCnWXRGvfCgGkEUxxYWS success
 Transaction executed in slot 6:
-  Signature: 5ULZWC6motQSBhmNbSKcmqrsFCZe9gVP8nKgjj4BAJYVFgtJ9BE8v4Yw4Rp6R2GKhY7CyCUN87VppVk3wLUUMuFa
+  Signature: 4dTw64wRwXPye2d4BbB5QxENrjNYFAYNM15TvA7rcy956aPK4rpumYo2W9q5wfP2pjTgRhUtDDsv13Qv7XaLET9w
   Status: Ok
   Log Messages:
     Program 44cUoDQ2V5GH5zgaYD7A3EMgRCnWXRGvfCgGkEUxxYWS invoke [1]
@@ -28,11 +28,20 @@ Transaction executed in slot 6:
     Program 44cUoDQ2V5GH5zgaYD7A3EMgRCnWXRGvfCgGkEUxxYWS consumed 3180 of 200000 compute units
     Program 44cUoDQ2V5GH5zgaYD7A3EMgRCnWXRGvfCgGkEUxxYWS success
 Transaction executed in slot 7:
-  Signature: 5YZAjJ8HE5fCLgKk5pVbWW99aMYiQuj4XChooqVP8QbQTXSmkcf9zeF3h2hTsfgccqzwenWAPhMDjQccV8wBhVjy
+  Signature: AZoNjgQyh9yQhGveto5cYWXCjsqaxJyoaueUiHW4jhtaetAK73rpoR4gAkV54YkHo1XhbUzmxmhXxKM24sYSaJz
   Status: Ok
   Log Messages:
     Program 44cUoDQ2V5GH5zgaYD7A3EMgRCnWXRGvfCgGkEUxxYWS invoke [1]
     Program log: Instruction: SetAuthorizedSigner
-    Program log: Authorized signer changed to: 2oKZoQkGG452dh6bbT6i3PsW2c17wyY9NpZrYajZQYDS
-    Program 44cUoDQ2V5GH5zgaYD7A3EMgRCnWXRGvfCgGkEUxxYWS consumed 14998 of 200000 compute units
+    Program log: Authorized signer changed to: 23EU2QaWmosF9WWCkyidia9JgV4M4YvDFCGrLwatmZ7u
+    Program 44cUoDQ2V5GH5zgaYD7A3EMgRCnWXRGvfCgGkEUxxYWS consumed 14933 of 200000 compute units
+    Program 44cUoDQ2V5GH5zgaYD7A3EMgRCnWXRGvfCgGkEUxxYWS success
+Transaction executed in slot 8:
+  Signature: 4W7PNytoCoUcYxyDK4u3UDL14ZKtWoe7as5hnknxdgk5VdYxid4m1bQXFS56wDVzW5Nk1rZARrSdk2bym5C2aTKo
+  Status: Ok
+  Log Messages:
+    Program 44cUoDQ2V5GH5zgaYD7A3EMgRCnWXRGvfCgGkEUxxYWS invoke [1]
+    Program log: Instruction: SetTaxRecipient
+    Program log: Tax recipient changed to: 8G8Fj4uKfcF1y4KWZNEoZC9GGgMtMdEGDBhf9UwBjtma
+    Program 44cUoDQ2V5GH5zgaYD7A3EMgRCnWXRGvfCgGkEUxxYWS consumed 15077 of 200000 compute units
     Program 44cUoDQ2V5GH5zgaYD7A3EMgRCnWXRGvfCgGkEUxxYWS success

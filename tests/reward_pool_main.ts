@@ -128,6 +128,36 @@ describe("reward_pool_main", () => {
     );
   });
 
+  it("Sets a new tax recipient for the reward pool", async () => {
+    // Generar un nuevo Keypair para el nuevo `tax_recipient`
+    const newTaxRecipient = Keypair.generate();
+  
+    // Verificar que el `reward_pool` esté correctamente inicializado con el `owner`
+    const rewardPoolAccount = await program.account.rewardPoolState.fetch(rewardPoolKp.publicKey);
+    assert.strictEqual(
+      rewardPoolAccount.owner.toBase58(),
+      wallet.publicKey.toBase58(),
+      "El propietario debería ser el owner correcto"
+    );
+  
+    // Ejecutar la transacción `set_tax_recipient` para cambiar el beneficiario de impuestos
+    await program.methods
+      .setTaxRecipient(newTaxRecipient.publicKey)
+      .accounts({
+        rewardPool: rewardPoolKp.publicKey,
+        owner: wallet.publicKey, // El propietario debe firmar el cambio
+      })
+      .rpc(); // Firmar automáticamente con `wallet`
+  
+    // Verificar que el nuevo `tax_recipient` esté correctamente configurado
+    const updatedRewardPoolAccount = await program.account.rewardPoolState.fetch(rewardPoolKp.publicKey);
+    assert.strictEqual(
+      updatedRewardPoolAccount.taxRecipient.toBase58(),
+      newTaxRecipient.publicKey.toBase58(),
+      "El tax_recipient no se ha actualizado correctamente"
+    );
+  });
+
   //@audit => Fail
   // Depósito de recompensas en el Reward Pool
   it("Deposits rewards correctly", async () => {
