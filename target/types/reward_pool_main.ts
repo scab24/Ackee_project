@@ -8,12 +8,32 @@ export type RewardPoolMain = {
         {
           "name": "rewardPool",
           "isMut": true,
-          "isSigner": true
+          "isSigner": false
+        },
+        {
+          "name": "poolTokenMint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "poolTokenVault",
+          "isMut": true,
+          "isSigner": false
         },
         {
           "name": "user",
           "isMut": true,
           "isSigner": true
+        },
+        {
+          "name": "associatedTokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
         },
         {
           "name": "systemProgram",
@@ -27,17 +47,17 @@ export type RewardPoolMain = {
       "name": "depositReward",
       "accounts": [
         {
+          "name": "poolTokenMint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
           "name": "rewardPool",
           "isMut": true,
           "isSigner": false
         },
         {
-          "name": "user",
-          "isMut": true,
-          "isSigner": true
-        },
-        {
-          "name": "taxRecipientAccount",
+          "name": "depositerTokenAccount",
           "isMut": true,
           "isSigner": false
         },
@@ -47,13 +67,23 @@ export type RewardPoolMain = {
           "isSigner": false
         },
         {
-          "name": "tokenProgram",
+          "name": "rewardInfo",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "depositer",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "associatedTokenProgram",
           "isMut": false,
           "isSigner": false
         },
         {
-          "name": "rewardInfo",
-          "isMut": true,
+          "name": "tokenProgram",
+          "isMut": false,
           "isSigner": false
         },
         {
@@ -85,12 +115,22 @@ export type RewardPoolMain = {
       "name": "claimReward",
       "accounts": [
         {
+          "name": "poolTokenMint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
           "name": "rewardPool",
           "isMut": true,
           "isSigner": false
         },
         {
-          "name": "amountClaimed",
+          "name": "userVault",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "campaignTokenAccount",
           "isMut": true,
           "isSigner": false
         },
@@ -100,12 +140,7 @@ export type RewardPoolMain = {
           "isSigner": false
         },
         {
-          "name": "user",
-          "isMut": true,
-          "isSigner": true
-        },
-        {
-          "name": "campaignTokenAccount",
+          "name": "userClaimInfo",
           "isMut": true,
           "isSigner": false
         },
@@ -118,6 +153,11 @@ export type RewardPoolMain = {
           "name": "systemProgram",
           "isMut": false,
           "isSigner": false
+        },
+        {
+          "name": "claimer",
+          "isMut": true,
+          "isSigner": true
         }
       ],
       "args": [
@@ -128,115 +168,6 @@ export type RewardPoolMain = {
         {
           "name": "amount",
           "type": "u64"
-        }
-      ]
-    },
-    {
-      "name": "withdrawReward",
-      "accounts": [
-        {
-          "name": "rewardPool",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "user",
-          "isMut": false,
-          "isSigner": true
-        },
-        {
-          "name": "campaignTokenAccount",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "tokenProgram",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "rewardInfo",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
-        }
-      ],
-      "args": [
-        {
-          "name": "campaignId",
-          "type": "u64"
-        },
-        {
-          "name": "amount",
-          "type": "u64"
-        }
-      ]
-    },
-    {
-      "name": "getClaimedAmount",
-      "accounts": [
-        {
-          "name": "amountClaimed",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "user",
-          "isMut": false,
-          "isSigner": true
-        }
-      ],
-      "args": [
-        {
-          "name": "campaignId",
-          "type": "u64"
-        }
-      ],
-      "returns": "u64"
-    },
-    {
-      "name": "setAuthorizedSigner",
-      "accounts": [
-        {
-          "name": "rewardPool",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "owner",
-          "isMut": false,
-          "isSigner": true
-        }
-      ],
-      "args": [
-        {
-          "name": "newSigner",
-          "type": "publicKey"
-        }
-      ]
-    },
-    {
-      "name": "setTaxRecipient",
-      "accounts": [
-        {
-          "name": "rewardPool",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "owner",
-          "isMut": false,
-          "isSigner": true
-        }
-      ],
-      "args": [
-        {
-          "name": "newTaxRecipient",
-          "type": "publicKey"
         }
       ]
     },
@@ -249,7 +180,7 @@ export type RewardPoolMain = {
           "isSigner": false
         },
         {
-          "name": "owner",
+          "name": "creator",
           "isMut": false,
           "isSigner": true
         }
@@ -265,7 +196,7 @@ export type RewardPoolMain = {
           "isSigner": false
         },
         {
-          "name": "owner",
+          "name": "creator",
           "isMut": false,
           "isSigner": true
         }
@@ -280,7 +211,11 @@ export type RewardPoolMain = {
         "kind": "struct",
         "fields": [
           {
-            "name": "owner",
+            "name": "creator",
+            "type": "publicKey"
+          },
+          {
+            "name": "tokenMint",
             "type": "publicKey"
           },
           {
@@ -288,12 +223,12 @@ export type RewardPoolMain = {
             "type": "publicKey"
           },
           {
-            "name": "authorizedSigner",
-            "type": "publicKey"
-          },
-          {
             "name": "paused",
             "type": "bool"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
           }
         ]
       }
@@ -304,28 +239,44 @@ export type RewardPoolMain = {
         "kind": "struct",
         "fields": [
           {
-            "name": "amount",
-            "type": "u64"
-          },
-          {
             "name": "tokenAddress",
             "type": "publicKey"
           },
           {
             "name": "ownerAddress",
             "type": "publicKey"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          },
+          {
+            "name": "campaignId",
+            "type": "u64"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
           }
         ]
       }
     },
     {
-      "name": "amountClaimed",
+      "name": "userClaimInfo",
       "type": {
         "kind": "struct",
         "fields": [
           {
-            "name": "amountClaimed",
+            "name": "claimedAmount",
             "type": "u64"
+          },
+          {
+            "name": "campaignId",
+            "type": "u64"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
           }
         ]
       }
@@ -334,48 +285,28 @@ export type RewardPoolMain = {
   "errors": [
     {
       "code": 6000,
-      "name": "CampaignAlreadyExists",
-      "msg": "The campaign already exists."
-    },
-    {
-      "code": 6001,
       "name": "NotEnoughReward",
       "msg": "Not enough reward in the pool."
     },
     {
-      "code": 6002,
-      "name": "ClaimAmountExceedsAllowedBalance",
-      "msg": "Claim amount exceeds allowed balance"
-    },
-    {
-      "code": 6003,
-      "name": "RewardAlreadyClaimed",
-      "msg": "Reward already claimed"
-    },
-    {
-      "code": 6004,
-      "name": "OnlyCampaignCreatorAllowed",
-      "msg": "Only campaign creator allowed to withdraw"
-    },
-    {
-      "code": 6005,
-      "name": "InvalidSignerAddress",
-      "msg": "Invalid signer address"
-    },
-    {
-      "code": 6006,
-      "name": "InvalidOwnerAddress",
-      "msg": "Invalid owner address"
-    },
-    {
-      "code": 6007,
+      "code": 6001,
       "name": "ProgramPaused",
       "msg": "Program is paused"
     },
     {
-      "code": 6008,
-      "name": "Unauthorized",
-      "msg": "Unauthorized"
+      "code": 6002,
+      "name": "UnauthorizedCampaignId",
+      "msg": "Unauthorized campaign id"
+    },
+    {
+      "code": 6003,
+      "name": "ArithmeticError",
+      "msg": "Arithmetic operation failed"
+    },
+    {
+      "code": 6004,
+      "name": "ClaimAmountExceedsAllowedBalance",
+      "msg": "Claim amount exceeds allowed balance"
     }
   ]
 };
@@ -390,12 +321,32 @@ export const IDL: RewardPoolMain = {
         {
           "name": "rewardPool",
           "isMut": true,
-          "isSigner": true
+          "isSigner": false
+        },
+        {
+          "name": "poolTokenMint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "poolTokenVault",
+          "isMut": true,
+          "isSigner": false
         },
         {
           "name": "user",
           "isMut": true,
           "isSigner": true
+        },
+        {
+          "name": "associatedTokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
         },
         {
           "name": "systemProgram",
@@ -409,17 +360,17 @@ export const IDL: RewardPoolMain = {
       "name": "depositReward",
       "accounts": [
         {
+          "name": "poolTokenMint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
           "name": "rewardPool",
           "isMut": true,
           "isSigner": false
         },
         {
-          "name": "user",
-          "isMut": true,
-          "isSigner": true
-        },
-        {
-          "name": "taxRecipientAccount",
+          "name": "depositerTokenAccount",
           "isMut": true,
           "isSigner": false
         },
@@ -429,13 +380,23 @@ export const IDL: RewardPoolMain = {
           "isSigner": false
         },
         {
-          "name": "tokenProgram",
+          "name": "rewardInfo",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "depositer",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "associatedTokenProgram",
           "isMut": false,
           "isSigner": false
         },
         {
-          "name": "rewardInfo",
-          "isMut": true,
+          "name": "tokenProgram",
+          "isMut": false,
           "isSigner": false
         },
         {
@@ -467,12 +428,22 @@ export const IDL: RewardPoolMain = {
       "name": "claimReward",
       "accounts": [
         {
+          "name": "poolTokenMint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
           "name": "rewardPool",
           "isMut": true,
           "isSigner": false
         },
         {
-          "name": "amountClaimed",
+          "name": "userVault",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "campaignTokenAccount",
           "isMut": true,
           "isSigner": false
         },
@@ -482,12 +453,7 @@ export const IDL: RewardPoolMain = {
           "isSigner": false
         },
         {
-          "name": "user",
-          "isMut": true,
-          "isSigner": true
-        },
-        {
-          "name": "campaignTokenAccount",
+          "name": "userClaimInfo",
           "isMut": true,
           "isSigner": false
         },
@@ -500,6 +466,11 @@ export const IDL: RewardPoolMain = {
           "name": "systemProgram",
           "isMut": false,
           "isSigner": false
+        },
+        {
+          "name": "claimer",
+          "isMut": true,
+          "isSigner": true
         }
       ],
       "args": [
@@ -510,115 +481,6 @@ export const IDL: RewardPoolMain = {
         {
           "name": "amount",
           "type": "u64"
-        }
-      ]
-    },
-    {
-      "name": "withdrawReward",
-      "accounts": [
-        {
-          "name": "rewardPool",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "user",
-          "isMut": false,
-          "isSigner": true
-        },
-        {
-          "name": "campaignTokenAccount",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "tokenProgram",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "rewardInfo",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
-        }
-      ],
-      "args": [
-        {
-          "name": "campaignId",
-          "type": "u64"
-        },
-        {
-          "name": "amount",
-          "type": "u64"
-        }
-      ]
-    },
-    {
-      "name": "getClaimedAmount",
-      "accounts": [
-        {
-          "name": "amountClaimed",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "user",
-          "isMut": false,
-          "isSigner": true
-        }
-      ],
-      "args": [
-        {
-          "name": "campaignId",
-          "type": "u64"
-        }
-      ],
-      "returns": "u64"
-    },
-    {
-      "name": "setAuthorizedSigner",
-      "accounts": [
-        {
-          "name": "rewardPool",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "owner",
-          "isMut": false,
-          "isSigner": true
-        }
-      ],
-      "args": [
-        {
-          "name": "newSigner",
-          "type": "publicKey"
-        }
-      ]
-    },
-    {
-      "name": "setTaxRecipient",
-      "accounts": [
-        {
-          "name": "rewardPool",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "owner",
-          "isMut": false,
-          "isSigner": true
-        }
-      ],
-      "args": [
-        {
-          "name": "newTaxRecipient",
-          "type": "publicKey"
         }
       ]
     },
@@ -631,7 +493,7 @@ export const IDL: RewardPoolMain = {
           "isSigner": false
         },
         {
-          "name": "owner",
+          "name": "creator",
           "isMut": false,
           "isSigner": true
         }
@@ -647,7 +509,7 @@ export const IDL: RewardPoolMain = {
           "isSigner": false
         },
         {
-          "name": "owner",
+          "name": "creator",
           "isMut": false,
           "isSigner": true
         }
@@ -662,7 +524,11 @@ export const IDL: RewardPoolMain = {
         "kind": "struct",
         "fields": [
           {
-            "name": "owner",
+            "name": "creator",
+            "type": "publicKey"
+          },
+          {
+            "name": "tokenMint",
             "type": "publicKey"
           },
           {
@@ -670,12 +536,12 @@ export const IDL: RewardPoolMain = {
             "type": "publicKey"
           },
           {
-            "name": "authorizedSigner",
-            "type": "publicKey"
-          },
-          {
             "name": "paused",
             "type": "bool"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
           }
         ]
       }
@@ -686,28 +552,44 @@ export const IDL: RewardPoolMain = {
         "kind": "struct",
         "fields": [
           {
-            "name": "amount",
-            "type": "u64"
-          },
-          {
             "name": "tokenAddress",
             "type": "publicKey"
           },
           {
             "name": "ownerAddress",
             "type": "publicKey"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          },
+          {
+            "name": "campaignId",
+            "type": "u64"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
           }
         ]
       }
     },
     {
-      "name": "amountClaimed",
+      "name": "userClaimInfo",
       "type": {
         "kind": "struct",
         "fields": [
           {
-            "name": "amountClaimed",
+            "name": "claimedAmount",
             "type": "u64"
+          },
+          {
+            "name": "campaignId",
+            "type": "u64"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
           }
         ]
       }
@@ -716,48 +598,28 @@ export const IDL: RewardPoolMain = {
   "errors": [
     {
       "code": 6000,
-      "name": "CampaignAlreadyExists",
-      "msg": "The campaign already exists."
-    },
-    {
-      "code": 6001,
       "name": "NotEnoughReward",
       "msg": "Not enough reward in the pool."
     },
     {
-      "code": 6002,
-      "name": "ClaimAmountExceedsAllowedBalance",
-      "msg": "Claim amount exceeds allowed balance"
-    },
-    {
-      "code": 6003,
-      "name": "RewardAlreadyClaimed",
-      "msg": "Reward already claimed"
-    },
-    {
-      "code": 6004,
-      "name": "OnlyCampaignCreatorAllowed",
-      "msg": "Only campaign creator allowed to withdraw"
-    },
-    {
-      "code": 6005,
-      "name": "InvalidSignerAddress",
-      "msg": "Invalid signer address"
-    },
-    {
-      "code": 6006,
-      "name": "InvalidOwnerAddress",
-      "msg": "Invalid owner address"
-    },
-    {
-      "code": 6007,
+      "code": 6001,
       "name": "ProgramPaused",
       "msg": "Program is paused"
     },
     {
-      "code": 6008,
-      "name": "Unauthorized",
-      "msg": "Unauthorized"
+      "code": 6002,
+      "name": "UnauthorizedCampaignId",
+      "msg": "Unauthorized campaign id"
+    },
+    {
+      "code": 6003,
+      "name": "ArithmeticError",
+      "msg": "Arithmetic operation failed"
+    },
+    {
+      "code": 6004,
+      "name": "ClaimAmountExceedsAllowedBalance",
+      "msg": "Claim amount exceeds allowed balance"
     }
   ]
 };
